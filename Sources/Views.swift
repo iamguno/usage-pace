@@ -149,6 +149,7 @@ struct PopoverView: View {
             }
             .font(.caption2)
             .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)   // 긴 번역은 잘리지 않고 줄바꿈
             Spacer()
             iconButton("arrow.clockwise", help: L("button.refresh")) { store.reload() }
             iconButton("gearshape", help: L("app.settings")) { store.showSettings = true }

@@ -53,7 +53,9 @@ final class UsageStore: ObservableObject {
     init(demo: Bool = false) {
         self.demo = demo
         if !demo { LegacyCleanup.migratePreferences() }
-        let lang = AppLanguage(rawValue: UserDefaults.standard.string(forKey: "language") ?? "") ?? .system
+        var lang = AppLanguage(rawValue: UserDefaults.standard.string(forKey: "language") ?? "") ?? .system
+        // 데모 모드(스크린샷용)는 DEMO_LANG으로 언어 지정, 저장된 설정은 건드리지 않음
+        if demo, let code = ProcessInfo.processInfo.environment["DEMO_LANG"], let l = AppLanguage(rawValue: code) { lang = l }
         L10n.apply(lang)
         language = lang
         menuWindow = MenuWindow(rawValue: defaults.string(forKey: "menuWindow") ?? "") ?? .weekly
@@ -228,13 +230,17 @@ enum Entry {
 }
 
 struct UsagePaceApp: App {
-    @StateObject private var store = UsageStore()
+    /// --demo: 예시 숫자로 실행 (스크린샷·홍보용, 실제 설정·데이터를 읽거나 바꾸지 않음)
+    @StateObject private var store = UsageStore(demo: CommandLine.arguments.contains("--demo"))
 
     var body: some Scene {
         MenuBarExtra {
             PopoverView(store: store)
         } label: {
-            Text("\(Image(systemName: "gauge.with.dots.needle.67percent")) \(store.menuText)")
+            HStack(spacing: 4) {
+                Image(systemName: "gauge.with.dots.needle.67percent")
+                Text(store.menuText)
+            }
         }
         .menuBarExtraStyle(.window)
     }

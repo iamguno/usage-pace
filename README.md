@@ -15,6 +15,8 @@
 
 <p align="center">
   <img src="docs/screenshot.png" width="340" alt="Usage Pace screenshot">
+<br>
+  <img src="docs/menubar.png" height="25" alt="Menu bar">
 </p>
 
 ## Why
