@@ -238,7 +238,7 @@ struct UsagePaceApp: App {
             PopoverView(store: store)
         } label: {
             HStack(spacing: 4) {
-                Image(systemName: "gauge.with.dots.needle.67percent")
+                Image(nsImage: AppIcons.menuBar)
                 Text(store.menuText)
             }
         }

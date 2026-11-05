@@ -75,9 +75,11 @@ struct PopoverView: View {
 
     private var header: some View {
         HStack(spacing: 8) {
-            Image(systemName: "gauge.with.dots.needle.67percent")
-                .font(.title2)
-                .foregroundStyle(.green)
+            Image(nsImage: AppIcons.app)
+                .resizable()
+                .interpolation(.high)
+                .frame(width: 30, height: 30)
+                .padding(-3)   // 아이콘 이미지의 투명 여백만큼 보정
             Text(store.showSettings ? L("app.settings") : "Usage Pace")
                 .font(.title3.weight(.semibold))
             Spacer()
