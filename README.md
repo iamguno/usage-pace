@@ -14,9 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/screenshot.png" width="340" alt="Usage Pace screenshot">
-<br>
-  <img src="docs/menubar.png" height="25" alt="Menu bar">
+  <img src="docs/screenshot.png" width="560" alt="Usage Pace in the macOS menu bar">
 </p>
 
 ## Why

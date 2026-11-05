@@ -14,9 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/screenshot-ko.png" width="340" alt="Usage Pace 화면">
-<br>
-  <img src="docs/menubar.png" height="25" alt="메뉴바">
+  <img src="docs/screenshot-ko.png" width="560" alt="메뉴바에서 연 Usage Pace 화면">
 </p>
 
 ## 왜 필요한가요
