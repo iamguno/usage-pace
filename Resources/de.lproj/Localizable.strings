@@ -23,7 +23,7 @@
 "footer.updated" = "Aktualisiert %1$@ · %2$@";
 "footer.source" = "Aktualisiert bei jeder Antwort von Claude Code im Terminal";
 "stale.notice" = "Stand: %@. Nutze Claude Code im Terminal, um zu aktualisieren.";
-"empty.connect" = "Verbinde Claude Code, um deine Nutzung zu sehen.";
+"empty.connect" = "Nutzt du Claude Code im Terminal? Verbinde es. Nur die Desktop-App? Aktiviere die automatische Aktualisierung.";
 "empty.waiting" = "Verbunden. Sende im Terminal eine Nachricht in Claude Code, dann erscheint deine Nutzung hier.";
 "settings.language" = "Sprache · Language";
 "language.system" = "Systemstandard";
@@ -39,6 +39,15 @@
 "settings.version" = "Version %@";
 "button.checkUpdates" = "Nach Updates suchen…";
 "button.checkUpdates.help" = "Öffnet die neueste Version auf GitHub im Browser. Usage Pace selbst verbindet sich nie mit dem Internet.";
+"settings.auto" = "Automatisch aktualisieren";
+"settings.auto.toggle" = "Alle 15 Min. ohne Terminal aktualisieren";
+"settings.auto.hint" = "Führt dein installiertes Claude Code mit einer winzigen Anfrage aus (Haiku, etwa 1.000 Tokens) und liest die mitgelieferte Nutzung. Das verbraucht einen sehr kleinen Teil deines Limits. Funktioniert auch, wenn du nur die Desktop-App nutzt.";
+"footer.source.auto" = "Aktualisiert alle 15 Min. und bei Antworten im Terminal";
+"empty.auto" = "Nutzung wird von Claude Code abgerufen…";
+"button.enableAuto" = "Automatisch aktualisieren";
+"auto.error.notFound" = "Claude Code wurde nicht gefunden. Prüfe, ob der Befehl claude im Terminal funktioniert.";
+"auto.error.noUsage" = "Claude Code hat keine Nutzung geliefert. Es muss mit einem Pro-, Max- oder Ultra-Plan angemeldet sein.";
+"auto.error.failed" = "Automatische Aktualisierung fehlgeschlagen: %@";
 "error.settingsUnreadable" = "~/.claude/settings.json konnte nicht gelesen werden, daher wurde nichts geändert. Prüfe, ob die Datei gültiges JSON ist.";
 "error.settingsWrite" = "Claude-Code-Einstellungen konnten nicht aktualisiert werden (%@).";
 "error.parse" = "Gespeicherte Nutzungsdaten konnten nicht gelesen werden.";

@@ -23,7 +23,7 @@
 "footer.updated" = "Atualizado %1$@ · %2$@";
 "footer.source" = "Atualiza a cada resposta do Claude Code no Terminal";
 "stale.notice" = "Última atualização: %@. Use o Claude Code no Terminal para atualizar.";
-"empty.connect" = "Conecte o Claude Code para ver seu uso.";
+"empty.connect" = "Usa o Claude Code no Terminal? Conecte-o. Só usa o app para desktop? Ative a atualização automática.";
 "empty.waiting" = "Conectado. Envie uma mensagem no Claude Code pelo Terminal e seu uso aparecerá aqui.";
 "settings.language" = "Idioma · Language";
 "language.system" = "Padrão do sistema";
@@ -39,6 +39,15 @@
 "settings.version" = "Versão %@";
 "button.checkUpdates" = "Verificar atualizações…";
 "button.checkUpdates.help" = "Abre a versão mais recente no GitHub no seu navegador. O Usage Pace nunca se conecta à internet.";
+"settings.auto" = "Atualização automática";
+"settings.auto.toggle" = "Atualizar a cada 15 min sem o Terminal";
+"settings.auto.hint" = "Executa o Claude Code instalado com uma solicitação mínima (Haiku, cerca de 1.000 tokens) e lê o uso retornado. Consome uma parte muito pequena do seu limite. Funciona mesmo se você só usa o app para desktop.";
+"footer.source.auto" = "Atualiza a cada 15 min e a cada resposta no Terminal";
+"empty.auto" = "Obtendo seu uso pelo Claude Code…";
+"button.enableAuto" = "Ativar atualização automática";
+"auto.error.notFound" = "Não foi possível encontrar o Claude Code. Verifique se o comando claude funciona no Terminal.";
+"auto.error.noUsage" = "O Claude Code não retornou o uso. Ele precisa estar conectado com um plano Pro, Max ou Ultra.";
+"auto.error.failed" = "Falha na atualização automática: %@";
 "error.settingsUnreadable" = "Não foi possível ler ~/.claude/settings.json, então nada foi alterado. Verifique se o arquivo é um JSON válido.";
 "error.settingsWrite" = "Não foi possível atualizar as configurações do Claude Code (%@).";
 "error.parse" = "Não foi possível ler os dados de uso salvos.";

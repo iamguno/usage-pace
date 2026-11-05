@@ -23,7 +23,7 @@
 "footer.updated" = "更新於 %1$@ · %2$@";
 "footer.source" = "終端機中的 Claude Code 每次回覆時更新";
 "stale.notice" = "這是%@的資料。在終端機使用 Claude Code 即可更新。";
-"empty.connect" = "連線 Claude Code 以查看用量。";
+"empty.connect" = "在終端機使用 Claude Code？請連線。只用桌面應用程式？請開啟自動重新整理。";
 "empty.waiting" = "已連線。在終端機的 Claude Code 中傳送一則訊息後，用量會顯示在這裡。";
 "settings.language" = "語言 · Language";
 "language.system" = "跟隨系統";
@@ -39,6 +39,15 @@
 "settings.version" = "版本 %@";
 "button.checkUpdates" = "檢查更新…";
 "button.checkUpdates.help" = "在瀏覽器中開啟 GitHub 上的最新版本。Usage Pace 本身從不連線網際網路。";
+"settings.auto" = "自動重新整理";
+"settings.auto.toggle" = "不需終端機，每 15 分鐘重新整理";
+"settings.auto.hint" = "使用已安裝的 Claude Code 傳送一個極小的請求（Haiku，約 1,000 個 token），並讀取隨之回傳的用量。會佔用極少量額度。即使只使用桌面應用程式也能運作。";
+"footer.source.auto" = "每 15 分鐘及終端機回覆時更新";
+"empty.auto" = "正在從 Claude Code 取得用量…";
+"button.enableAuto" = "開啟自動重新整理";
+"auto.error.notFound" = "找不到 Claude Code。請確認終端機中可以執行 claude 指令。";
+"auto.error.noUsage" = "Claude Code 沒有回傳用量。需要使用 Pro、Max 或 Ultra 方案登入。";
+"auto.error.failed" = "自動重新整理失敗：%@";
 "error.settingsUnreadable" = "無法讀取 ~/.claude/settings.json，因此未做任何變更。請確認該檔案是有效的 JSON。";
 "error.settingsWrite" = "無法更新 Claude Code 設定（%@）。";
 "error.parse" = "無法讀取已儲存的用量資料。";

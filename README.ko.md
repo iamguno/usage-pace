@@ -32,7 +32,8 @@ Usage Pace는 이 두 숫자를 나란히 보여줘요.
 - **예측**: "이 속도면 리셋 시점에 약 76% 사용" 또는 "토 오후 6:37쯤 한도 도달"
 - **메뉴바 표시**: `47% / 30%` 형태. 주간/세션과 표시 방식을 고를 수 있어요.
 - **9개 언어**
-- **로그인·토큰·네트워크 접속 없음**
+- **데스크톱 앱만 써도 OK**: 터미널 없이 15분마다 자동 갱신(선택)
+- **로그인·토큰 없음.** 앱 자체는 인터넷에 접속하지 않아요.
 
 ## 동작 방식
 
@@ -45,10 +46,22 @@ Claude Code는 [상태 표시줄(status line)](https://code.claude.com/docs/en/s
 2. Claude Code가 응답할 때마다 도우미가 숫자를 `~/Library/Application Support/UsagePace/rate_limits.json`에 저장하고, 앱이 이 파일을 읽어요.
 3. **연결 해제**를 누르면 원래 상태 표시줄로 돌아가요.
 
+### 자동 갱신 (선택, 데스크톱 앱 사용자용)
+
+Claude Code를 데스크톱 앱에서만 쓰면 상태 표시줄이 실행되지 않아요. 이럴 땐 **설정 → 자동 갱신**을 켜세요.
+15분마다 설치된 `claude` 명령을 화면 없는 모드(`claude -p`)로 아주 작게 실행해요.
+Haiku 모델, 한 줄짜리 시스템 프롬프트, 도구·MCP·훅 없이 보내서 약 1,000 토큰이에요. 한도를 아주 조금 써요.
+응답과 함께 오는 공식 사용량 값만 저장해요.
+
+- 최근 15분 안에 터미널 상태 표시줄로 이미 갱신됐으면 건너뛰어요.
+- 팝오버의 새로고침 버튼을 누르면 바로 실행해요.
+- 로그인은 Claude Code가 처리해요. Usage Pace는 로그인 정보를 읽거나 저장하지 않아요.
+- `claude` 명령이 설치돼 있고 로그인돼 있어야 해요. 데스크톱 앱만 써왔다면 터미널에서 `claude`를 한 번 실행해 로그인하세요.
+
 ### 한계
 
-- **터미널 Claude Code**와 **Pro·Max·Ultra 플랜**이 필요해요. 사용량 데이터는 이 플랜에만 제공돼요.
-- 사용량 숫자는 **터미널 Claude Code가 응답할 때만** 갱신돼요. 데스크톱 앱이나 claude.ai에서 쓴 양은 다음 터미널 응답 때 반영돼요.
+- **Claude Code CLI**가 **Pro·Max·Ultra 플랜**으로 로그인돼 있어야 해요. 사용량 데이터는 이 플랜에만 제공돼요.
+- 자동 갱신을 켜지 않으면 사용량 숫자는 **터미널 Claude Code가 응답할 때만** 갱신돼요. 데스크톱 앱이나 claude.ai에서 쓴 양은 다음 터미널 응답 때 반영돼요.
   시간 경과 %는 항상 실시간이고, 데이터가 1시간 넘게 오래되면 앱이 알려줘요.
 - 상태 표시줄을 설정하면 터미널 Claude Code 하단의 일부 단축키 안내(`? for shortcuts` 등)가 숨겨져요.
 
@@ -63,8 +76,9 @@ macOS 13 Ventura 이상, Apple Silicon과 Intel 모두 지원해요.
    ```bash
    xattr -dr com.apple.quarantine /Applications/UsagePace.app
    ```
-3. 메뉴바 아이콘을 누르고 **연결하기**를 눌러요.
-4. 터미널 Claude Code에서 아무 메시지나 보내면 몇 초 안에 사용량이 나타나요.
+3. 메뉴바 아이콘을 눌러요.
+   - **터미널에서 Claude Code를 쓴다면**: **연결하기**를 누르고 Claude Code에서 아무 메시지나 보내면 몇 초 안에 사용량이 나타나요.
+   - **데스크톱 앱만 쓴다면**: **자동 갱신 켜기**를 누르면 10초쯤 뒤에 사용량이 나타나요.
 
 업데이트하려면 **설정(⚙︎) → 업데이트 확인…**을 누르세요. 브라우저에서 최신 릴리스 페이지가 열려요.
 앱을 종료하고 `UsagePace.app`을 새 버전으로 바꾼 뒤 다시 열면 돼요. 연결과 설정은 그대로 유지돼요.
@@ -87,7 +101,7 @@ open ~/Applications/UsagePace.app
 - **번역**: `tools/translations.py`가 원본이에요. 고친 뒤 `python3 tools/translations.py Resources`를 실행하면 `Resources/<언어>.lproj/Localizable.strings`가 다시 만들어져요.
   - 언어를 추가하려면 translations.py에 열을 추가하고, `Sources/L10n.swift`의 `AppLanguage`에 case를 추가해요.
 - **아이콘**: `tools/make_icon.swift`를 고친 뒤 `./tools/make_icon.sh`를 실행하면 `Assets/AppIcon.icns`가 만들어져요.
-- **명령줄**: `UsagePace.app/Contents/MacOS/UsagePace --connect | --disconnect | --status`
+- **명령줄**: `UsagePace.app/Contents/MacOS/UsagePace --connect | --disconnect | --status | --probe`
 - **테스트 환경 변수**: `USAGEPACE_DIR`, `USAGEPACE_CLAUDE_DIR`로 실제 `~/.claude` 대신 임시 폴더를 쓸 수 있어요.
 - **화면 미리보기**: `SNAPSHOT_LANG=ko UsagePace --snapshot out.png`
 
@@ -100,7 +114,8 @@ open ~/Applications/UsagePace.app
 ## 개인정보
 
 네트워크 요청을 전혀 하지 않고, 분석 데이터도 수집하지 않아요.
-Claude Code가 상태 표시줄에 넘겨주는 사용량 숫자만 읽어요.
+Claude Code가 넘겨주는 사용량 숫자만 읽어요.
+자동 갱신을 켜면 15분마다 설치된 Claude Code CLI를 실행하고, 그 아주 작은 요청은 Claude Code가 평소처럼 Anthropic에 보내요.
 
 ## 안내
 

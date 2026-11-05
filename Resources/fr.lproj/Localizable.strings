@@ -23,7 +23,7 @@
 "footer.updated" = "Mis à jour %1$@ · %2$@";
 "footer.source" = "Mis à jour à chaque réponse de Claude Code dans le Terminal";
 "stale.notice" = "Dernière mise à jour : %@. Utilisez Claude Code dans le Terminal pour actualiser.";
-"empty.connect" = "Connectez Claude Code pour voir votre utilisation.";
+"empty.connect" = "Vous utilisez Claude Code dans le Terminal ? Connectez-le. Seulement l'app de bureau ? Activez l'actualisation auto.";
 "empty.waiting" = "Connecté. Envoyez un message dans Claude Code depuis le Terminal et votre utilisation s'affichera ici.";
 "settings.language" = "Langue · Language";
 "language.system" = "Langue du système";
@@ -39,6 +39,15 @@
 "settings.version" = "Version %@";
 "button.checkUpdates" = "Rechercher des mises à jour…";
 "button.checkUpdates.help" = "Ouvre la dernière version sur GitHub dans votre navigateur. Usage Pace ne se connecte jamais à Internet.";
+"settings.auto" = "Actualisation auto";
+"settings.auto.toggle" = "Actualiser toutes les 15 min sans le Terminal";
+"settings.auto.hint" = "Lance votre Claude Code installé avec une toute petite requête (Haiku, environ 1 000 jetons) et lit l'utilisation renvoyée. Cela consomme une très petite part de votre limite. Fonctionne même si vous n'utilisez que l'app de bureau.";
+"footer.source.auto" = "Mis à jour toutes les 15 min et à chaque réponse dans le Terminal";
+"empty.auto" = "Récupération de votre utilisation depuis Claude Code…";
+"button.enableAuto" = "Activer l'actualisation auto";
+"auto.error.notFound" = "Claude Code introuvable. Vérifiez que la commande claude fonctionne dans le Terminal.";
+"auto.error.noUsage" = "Claude Code n'a pas renvoyé d'utilisation. Il doit être connecté avec un forfait Pro, Max ou Ultra.";
+"auto.error.failed" = "Échec de l'actualisation auto : %@";
 "error.settingsUnreadable" = "Impossible de lire ~/.claude/settings.json : rien n'a été modifié. Vérifiez que le fichier est un JSON valide.";
 "error.settingsWrite" = "Impossible de mettre à jour les réglages de Claude Code (%@).";
 "error.parse" = "Impossible de lire les données d'utilisation enregistrées.";

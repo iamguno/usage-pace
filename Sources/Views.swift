@@ -89,8 +89,9 @@ struct PopoverView: View {
     @ViewBuilder
     private var content: some View {
         if let s = store.snapshot {
-            // 1시간 넘게 갱신이 없으면 안내 (데스크톱 앱·웹 사용은 반영되지 않으므로)
-            if store.now.timeIntervalSince(s.fetchedAt) > 3600 {
+            // 1시간 넘게 갱신이 없으면 안내 (데스크톱 앱·웹 사용은 반영되지 않으므로).
+            // 자동 갱신이 켜져 있으면 실패 시 오류 상자가 대신 이유를 보여줌.
+            if !store.autoRefresh && store.now.timeIntervalSince(s.fetchedAt) > 3600 {
                 HStack(alignment: .top, spacing: 6) {
                     Image(systemName: "clock.badge.exclamationmark")
                         .foregroundStyle(.orange)
@@ -110,18 +111,22 @@ struct PopoverView: View {
                 LimitCard(title: L("card.weekly.all"), window: w, now: store.now, weekly: true)
             }
         } else {
-            // 아직 데이터 없음: 연결 안 됨 → 연결 버튼, 연결됨 → Claude Code 사용 안내
+            // 아직 데이터 없음: 자동 갱신 중 → 대기 안내, 연결 안 됨 → 연결·자동 갱신 버튼, 연결됨 → 터미널 사용 안내
+            let waiting = store.connected || store.autoRefresh
             HStack(alignment: .top, spacing: 10) {
-                Image(systemName: store.connected ? "hourglass" : "link")
+                Image(systemName: waiting ? "hourglass" : "link")
                     .font(.title3)
                     .foregroundStyle(.secondary)
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(store.connected ? L("empty.waiting") : L("empty.connect"))
+                    Text(store.autoRefresh ? L("empty.auto") : store.connected ? L("empty.waiting") : L("empty.connect"))
                         .font(.callout)
                         .fixedSize(horizontal: false, vertical: true)
-                    if !store.connected {
-                        Button(L("button.connect")) { store.connect() }
-                            .controlSize(.small)
+                    if !waiting {
+                        HStack {
+                            Button(L("button.connect")) { store.connect() }
+                            Button(L("button.enableAuto")) { store.autoRefresh = true }
+                        }
+                        .controlSize(.small)
                     }
                 }
             }
@@ -147,13 +152,17 @@ struct PopoverView: View {
                 if let s = store.snapshot {
                     Text(L("footer.updated", Fmt.clock(s.fetchedAt), Fmt.relative(s.fetchedAt, now: store.now)))
                 }
-                Text(L("footer.source"))
+                Text(L(store.autoRefresh ? "footer.source.auto" : "footer.source"))
             }
             .font(.caption2)
             .foregroundStyle(.secondary)
             .fixedSize(horizontal: false, vertical: true)   // 긴 번역은 잘리지 않고 줄바꿈
             Spacer()
-            iconButton("arrow.clockwise", help: L("button.refresh")) { store.reload() }
+            if store.probing {
+                ProgressView().controlSize(.small).frame(width: 16, height: 16)
+            } else {
+                iconButton("arrow.clockwise", help: L("button.refresh")) { store.refreshNow() }
+            }
             iconButton("gearshape", help: L("app.settings")) { store.showSettings = true }
             iconButton("power", help: L("button.quit")) { NSApp.terminate(nil) }
         }
@@ -351,7 +360,18 @@ struct SettingsView: View {
                 Text(L("settings.cc.hint"))
                     .font(.caption2).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                if let e = store.errorMessage {
+                if let e = store.lastError?.errorDescription {
+                    Text(e).font(.caption2).foregroundStyle(.orange)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+
+            group(L("settings.auto"), icon: "arrow.triangle.2.circlepath") {
+                Toggle(L("settings.auto.toggle"), isOn: $store.autoRefresh)
+                Text(L("settings.auto.hint"))
+                    .font(.caption2).foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                if store.autoRefresh, let e = store.probeError {
                     Text(e).font(.caption2).foregroundStyle(.orange)
                         .fixedSize(horizontal: false, vertical: true)
                 }

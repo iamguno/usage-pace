@@ -23,7 +23,7 @@
 "footer.updated" = "更新于 %1$@ · %2$@";
 "footer.source" = "终端中的 Claude Code 每次回复时更新";
 "stale.notice" = "这是%@的数据。在终端使用 Claude Code 即可更新。";
-"empty.connect" = "连接 Claude Code 以查看用量。";
+"empty.connect" = "在终端使用 Claude Code？请连接。只用桌面应用？请开启自动刷新。";
 "empty.waiting" = "已连接。在终端的 Claude Code 中发送一条消息后，用量会显示在这里。";
 "settings.language" = "语言 · Language";
 "language.system" = "跟随系统";
@@ -39,6 +39,15 @@
 "settings.version" = "版本 %@";
 "button.checkUpdates" = "检查更新…";
 "button.checkUpdates.help" = "在浏览器中打开 GitHub 上的最新版本。Usage Pace 本身从不连接互联网。";
+"settings.auto" = "自动刷新";
+"settings.auto.toggle" = "无需终端，每 15 分钟刷新";
+"settings.auto.hint" = "使用已安装的 Claude Code 发送一个极小的请求（Haiku，约 1,000 个 token），并读取随之返回的用量。会占用极少量额度。即使只使用桌面应用也能工作。";
+"footer.source.auto" = "每 15 分钟及终端回复时更新";
+"empty.auto" = "正在从 Claude Code 获取用量…";
+"button.enableAuto" = "开启自动刷新";
+"auto.error.notFound" = "找不到 Claude Code。请确认终端中可以运行 claude 命令。";
+"auto.error.noUsage" = "Claude Code 没有返回用量。需要使用 Pro、Max 或 Ultra 套餐登录。";
+"auto.error.failed" = "自动刷新失败：%@";
 "error.settingsUnreadable" = "无法读取 ~/.claude/settings.json，因此未做任何更改。请检查该文件是否为有效的 JSON。";
 "error.settingsWrite" = "无法更新 Claude Code 设置（%@）。";
 "error.parse" = "无法读取已保存的用量数据。";

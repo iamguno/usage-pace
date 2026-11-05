@@ -23,7 +23,7 @@
 "footer.updated" = "更新 %1$@ · %2$@";
 "footer.source" = "ターミナルの Claude Code の応答ごとに更新";
 "stale.notice" = "%@のデータです。ターミナルで Claude Code を使うと更新されます。";
-"empty.connect" = "使用量を表示するには Claude Code に接続してください。";
+"empty.connect" = "ターミナルで Claude Code を使うなら接続してください。デスクトップアプリだけなら自動更新をオンにしてください。";
 "empty.waiting" = "接続しました。ターミナルの Claude Code でメッセージを送ると、ここに使用量が表示されます。";
 "settings.language" = "言語 · Language";
 "language.system" = "システム設定に従う";
@@ -39,6 +39,15 @@
 "settings.version" = "バージョン %@";
 "button.checkUpdates" = "アップデートを確認…";
 "button.checkUpdates.help" = "ブラウザで GitHub の最新リリースを開きます。Usage Pace 自体はインターネットに接続しません。";
+"settings.auto" = "自動更新";
+"settings.auto.toggle" = "ターミナルなしで15分ごとに更新";
+"settings.auto.hint" = "インストール済みの Claude Code でごく小さなリクエスト（Haiku、約1,000トークン）を送り、一緒に返ってくる使用量を読み取ります。上限をごくわずかに消費します。デスクトップアプリだけを使っていても動作します。";
+"footer.source.auto" = "15分ごと、およびターミナルでの応答時に更新";
+"empty.auto" = "Claude Code から使用量を取得中…";
+"button.enableAuto" = "自動更新をオン";
+"auto.error.notFound" = "Claude Code が見つかりません。ターミナルで claude コマンドが動くか確認してください。";
+"auto.error.noUsage" = "Claude Code から使用量が返りませんでした。Pro・Max・Ultra プランでログインしている必要があります。";
+"auto.error.failed" = "自動更新に失敗しました: %@";
 "error.settingsUnreadable" = "~/.claude/settings.json を読み取れなかったため、何も変更していません。ファイルが正しい JSON か確認してください。";
 "error.settingsWrite" = "Claude Code の設定を更新できませんでした（%@）。";
 "error.parse" = "保存された使用量データを読み取れませんでした。";

@@ -45,9 +45,21 @@ final class UsageStore: ObservableObject {
     @Published var menuStyle: MenuStyle {
         didSet { defaults.set(menuStyle.rawValue, forKey: "menuStyle") }
     }
+    /// 터미널 없이 자동 갱신 (Claude Code를 15분마다 아주 작게 실행). 사용량을 조금 쓰므로 기본은 꺼짐.
+    @Published var autoRefresh: Bool {
+        didSet {
+            guard !demo else { return }
+            defaults.set(autoRefresh, forKey: "autoRefresh")
+            probeError = nil
+            if autoRefresh { probeIfDue(force: true) }
+        }
+    }
+    @Published var probing = false
+    @Published var probeError: String?
 
     private let defaults = UserDefaults.standard
     private var timer: Timer?
+    private var lastProbe: Date?
     private let demo: Bool
 
     init(demo: Bool = false) {
@@ -60,6 +72,7 @@ final class UsageStore: ObservableObject {
         language = lang
         menuWindow = MenuWindow(rawValue: defaults.string(forKey: "menuWindow") ?? "") ?? .weekly
         menuStyle = MenuStyle(rawValue: defaults.string(forKey: "menuStyle") ?? "") ?? .usedAndElapsed
+        autoRefresh = defaults.bool(forKey: "autoRefresh")
 
         if demo {
             snapshot = Self.demoSnapshot()
@@ -69,10 +82,45 @@ final class UsageStore: ObservableObject {
         LegacyCleanup.run()
         ClaudeCodeConnector.refreshBridgeIfConnected()
         reload()
-        // 파일 읽기는 가벼우므로 10초마다 확인 (시간 경과 %도 함께 갱신)
+        probeIfDue()
+        // 파일 읽기는 가벼우므로 10초마다 확인 (시간 경과 %도 함께 갱신). 자동 갱신은 15분이 지났을 때만 실행.
         timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.reload() }
+            Task { @MainActor in
+                self?.reload()
+                self?.probeIfDue()
+            }
         }
+    }
+
+    /// 새로고침 버튼: 파일 다시 읽기 + 자동 갱신이 켜져 있으면 바로 받아오기
+    func refreshNow() {
+        reload()
+        probeIfDue(force: true)
+    }
+
+    /// 자동 갱신: 마지막 데이터(터미널 포함)와 마지막 시도가 모두 15분 이상 지났을 때만 실행
+    func probeIfDue(force: Bool = false) {
+        guard autoRefresh, !demo, !probing else { return }
+        if !force {
+            let now = Date()
+            if let s = snapshot, now.timeIntervalSince(s.fetchedAt) < ClaudeProbe.interval { return }
+            if let last = lastProbe, now.timeIntervalSince(last) < ClaudeProbe.interval { return }
+        }
+        probing = true
+        lastProbe = Date()
+        Task.detached(priority: .utility) { [weak self] in
+            let result = ClaudeProbe.refresh()
+            await self?.finishProbe(result)
+        }
+    }
+
+    private func finishProbe(_ result: Result<[String: Any], ClaudeProbe.Failure>) {
+        probing = false
+        switch result {
+        case .success: probeError = nil
+        case .failure(let f): probeError = autoRefresh ? f.message : nil
+        }
+        reload()
     }
 
     /// 도우미가 저장한 사용량 파일 다시 읽기
@@ -114,7 +162,8 @@ final class UsageStore: ObservableObject {
         reload()
     }
 
-    var errorMessage: String? { lastError?.errorDescription }
+    /// 팝오버에 보여줄 오류 (연결·파일 오류, 자동 갱신 오류)
+    var errorMessage: String? { lastError?.errorDescription ?? (autoRefresh ? probeError : nil) }
 
     // MARK: Menu bar text
 
@@ -180,6 +229,19 @@ enum Entry {
         if let i = args.firstIndex(of: "--snapshot"), i + 1 < args.count {
             MainActor.assumeIsolated { renderSnapshot(to: args[i + 1]) }
             exit(0)
+        }
+        // 명령줄에서 자동 갱신 한 번 실행 (테스트용)
+        if args.contains("--probe") {
+            print("claude: \(ClaudeProbe.locateCLI()?.path ?? "not found")")
+            switch ClaudeProbe.refresh() {
+            case .success(let saved):
+                print("saved to \(Paths.usageFile.path)")
+                for key in ["five_hour", "seven_day"] { print("\(key): \(saved[key] ?? "-")") }
+                exit(0)
+            case .failure(let f):
+                FileHandle.standardError.write(Data("error: \(f.message)\n".utf8))
+                exit(1)
+            }
         }
         // 명령줄에서 연결/해제/상태 확인 (스크립트·테스트용)
         if args.contains("--connect") || args.contains("--disconnect") || args.contains("--status") {

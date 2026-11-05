@@ -23,7 +23,7 @@
 "footer.updated" = "Updated %1$@ · %2$@";
 "footer.source" = "Updates when Claude Code responds in the terminal";
 "stale.notice" = "Last updated %@. Use Claude Code in the terminal to refresh.";
-"empty.connect" = "Connect Claude Code to see your usage.";
+"empty.connect" = "Use Claude Code in the terminal? Connect it. Only use the desktop app? Turn on auto refresh.";
 "empty.waiting" = "Connected. Send a message in Claude Code in your terminal and your usage will appear here.";
 "settings.language" = "Language";
 "language.system" = "System default";
@@ -39,6 +39,15 @@
 "settings.version" = "Version %@";
 "button.checkUpdates" = "Check for Updates…";
 "button.checkUpdates.help" = "Opens the latest release on GitHub in your browser. Usage Pace itself never connects to the internet.";
+"settings.auto" = "Auto refresh";
+"settings.auto.toggle" = "Refresh every 15 min without the terminal";
+"settings.auto.hint" = "Runs your installed Claude Code with a tiny request (Haiku, about 1,000 tokens) and reads the usage that comes back. It uses a very small amount of your limit. Works even if you only use the desktop app.";
+"footer.source.auto" = "Updates every 15 min and on terminal responses";
+"empty.auto" = "Getting your usage from Claude Code…";
+"button.enableAuto" = "Turn on auto refresh";
+"auto.error.notFound" = "Couldn't find Claude Code. Make sure the claude command works in Terminal.";
+"auto.error.noUsage" = "Claude Code didn't return usage. It must be signed in with a Pro, Max or Ultra plan.";
+"auto.error.failed" = "Auto refresh failed: %@";
 "error.settingsUnreadable" = "Couldn't read ~/.claude/settings.json, so nothing was changed. Check that the file is valid JSON.";
 "error.settingsWrite" = "Couldn't update Claude Code settings (%@).";
 "error.parse" = "Couldn't read the saved usage data.";
