@@ -36,6 +36,9 @@
 "window.session" = "会话";
 "settings.general" = "通用";
 "settings.launchAtLogin" = "登录时启动";
+"settings.version" = "版本 %@";
+"button.checkUpdates" = "检查更新…";
+"button.checkUpdates.help" = "在浏览器中打开 GitHub 上的最新版本。Usage Pace 本身从不连接互联网。";
 "error.settingsUnreadable" = "无法读取 ~/.claude/settings.json，因此未做任何更改。请检查该文件是否为有效的 JSON。";
 "error.settingsWrite" = "无法更新 Claude Code 设置（%@）。";
 "error.parse" = "无法读取已保存的用量数据。";

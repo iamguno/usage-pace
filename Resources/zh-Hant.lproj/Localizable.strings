@@ -36,6 +36,9 @@
 "window.session" = "工作階段";
 "settings.general" = "一般";
 "settings.launchAtLogin" = "登入時啟動";
+"settings.version" = "版本 %@";
+"button.checkUpdates" = "檢查更新…";
+"button.checkUpdates.help" = "在瀏覽器中開啟 GitHub 上的最新版本。Usage Pace 本身從不連線網際網路。";
 "error.settingsUnreadable" = "無法讀取 ~/.claude/settings.json，因此未做任何變更。請確認該檔案是有效的 JSON。";
 "error.settingsWrite" = "無法更新 Claude Code 設定（%@）。";
 "error.parse" = "無法讀取已儲存的用量資料。";

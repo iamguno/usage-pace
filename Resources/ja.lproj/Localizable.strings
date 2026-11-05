@@ -36,6 +36,9 @@
 "window.session" = "セッション";
 "settings.general" = "一般";
 "settings.launchAtLogin" = "ログイン時に起動";
+"settings.version" = "バージョン %@";
+"button.checkUpdates" = "アップデートを確認…";
+"button.checkUpdates.help" = "ブラウザで GitHub の最新リリースを開きます。Usage Pace 自体はインターネットに接続しません。";
 "error.settingsUnreadable" = "~/.claude/settings.json を読み取れなかったため、何も変更していません。ファイルが正しい JSON か確認してください。";
 "error.settingsWrite" = "Claude Code の設定を更新できませんでした（%@）。";
 "error.parse" = "保存された使用量データを読み取れませんでした。";

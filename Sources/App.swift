@@ -160,6 +160,17 @@ enum LoginItem {
     }
 }
 
+// MARK: - Version & updates
+
+/// 앱은 인터넷에 접속하지 않으므로, 업데이트 확인은 브라우저로 GitHub 최신 릴리스 페이지를 여는 방식
+enum AppInfo {
+    static var version: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "–"
+    }
+    static let latestReleaseURL = URL(string: "https://github.com/iamguno/usage-pace/releases/latest")!
+    static func openLatestRelease() { NSWorkspace.shared.open(latestReleaseURL) }
+}
+
 // MARK: - Entry point
 
 @main
@@ -201,8 +212,9 @@ enum Entry {
     @MainActor
     static func renderSnapshot(to path: String) {
         let env = ProcessInfo.processInfo.environment
-        if let code = env["SNAPSHOT_LANG"], let lang = AppLanguage(rawValue: code) { L10n.apply(lang) }
         let store = UsageStore(demo: true)
+        // store 초기화가 저장된 언어를 적용하므로, 그 뒤에 덮어써야 SNAPSHOT_LANG이 반영됨
+        if let code = env["SNAPSHOT_LANG"], let lang = AppLanguage(rawValue: code) { L10n.apply(lang) }
         store.showSettings = env["SNAPSHOT_SETTINGS"] != nil
         if let mins = env["SNAPSHOT_AGE_MIN"].flatMap(Double.init), let snap = store.snapshot {
             store.snapshot = UsageSnapshot(session: snap.session, weekly: snap.weekly,

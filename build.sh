@@ -9,8 +9,8 @@ APP_NAME="UsagePace"
 # 번들 ID (GitHub 계정 기반, 바꾸면 사용자 설정이 초기화되니 고정)
 BUNDLE_ID="io.github.iamguno.usagepace"
 # 버전: 릴리스마다 올림 (CFBundleShortVersionString / CFBundleVersion)
-VERSION="${VERSION:-0.1.2}"
-BUILD_NUMBER="${BUILD_NUMBER:-3}"
+VERSION="${VERSION:-0.1.3}"
+BUILD_NUMBER="${BUILD_NUMBER:-4}"
 OUT_DIR="${OUT_DIR:-$HOME/Applications}"   # OneDrive 폴더 밖에 빌드 (코드서명 문제 방지)
 APP="$OUT_DIR/$APP_NAME.app"
 

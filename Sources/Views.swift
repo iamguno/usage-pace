@@ -370,6 +370,15 @@ struct SettingsView: View {
 
             group(L("settings.general")) {
                 Toggle(L("settings.launchAtLogin"), isOn: $store.launchAtLogin)
+                HStack {
+                    Text(L("settings.version", AppInfo.version))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                    Spacer()
+                    Button(L("button.checkUpdates")) { AppInfo.openLatestRelease() }
+                        .help(L("button.checkUpdates.help"))
+                        .lineLimit(1)
+                }
             }
 
             HStack(alignment: .bottom) {

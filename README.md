@@ -70,6 +70,9 @@ Requires macOS 13 Ventura or later, on Apple Silicon or Intel.
 3. Click the menu bar icon, then **Connect**.
 4. Send any message to Claude Code in your terminal. Your usage appears within a few seconds.
 
+To update, open **Settings (⚙︎) → Check for Updates…**. It opens the latest release page in your browser.
+Quit the app, replace `UsagePace.app` with the new version, and open it again. Your connection and settings carry over.
+
 ## Uninstall
 
 1. Click **Settings (⚙︎) → Disconnect**. This restores your original status line.

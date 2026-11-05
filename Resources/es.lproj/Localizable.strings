@@ -36,6 +36,9 @@
 "window.session" = "Sesión";
 "settings.general" = "General";
 "settings.launchAtLogin" = "Abrir al iniciar sesión";
+"settings.version" = "Versión %@";
+"button.checkUpdates" = "Buscar actualizaciones…";
+"button.checkUpdates.help" = "Abre la última versión en GitHub en tu navegador. Usage Pace nunca se conecta a internet por sí misma.";
 "error.settingsUnreadable" = "No se pudo leer ~/.claude/settings.json, así que no se cambió nada. Comprueba que el archivo sea JSON válido.";
 "error.settingsWrite" = "No se pudo actualizar la configuración de Claude Code (%@).";
 "error.parse" = "No se pudieron leer los datos de uso guardados.";

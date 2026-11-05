@@ -36,6 +36,9 @@
 "window.session" = "세션";
 "settings.general" = "기타";
 "settings.launchAtLogin" = "로그인 시 자동 실행";
+"settings.version" = "버전 %@";
+"button.checkUpdates" = "업데이트 확인…";
+"button.checkUpdates.help" = "브라우저에서 GitHub 최신 릴리스 페이지를 열어요. Usage Pace는 인터넷에 직접 접속하지 않아요.";
 "error.settingsUnreadable" = "~/.claude/settings.json을 읽지 못해서 아무것도 바꾸지 않았어요. 파일이 올바른 JSON인지 확인하세요.";
 "error.settingsWrite" = "Claude Code 설정을 바꾸지 못했어요 (%@).";
 "error.parse" = "저장된 사용량 데이터를 읽지 못했어요.";
