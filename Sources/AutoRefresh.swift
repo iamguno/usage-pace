@@ -2,18 +2,18 @@ import Foundation
 
 // MARK: - 터미널 없이 사용량 받아오기
 //
-// 설치된 Claude Code를 `claude -p`(화면 없는 모드)로 아주 작게 실행하면,
-// 응답 스트림에 공식 `rate_limit_event`(5시간·주간 사용률과 리셋 시각)가 함께 옴.
-// 그 값만 읽어서 상태 표시줄 도우미와 같은 형식으로 rate_limits.json에 저장.
+// 설치된 Claude Code를 화면 없는 모드(stream-json)로 잠깐 켜고, 메시지 대신
+// 「사용량 알려 줘」 제어 요청(get_usage)만 보냄. 데스크톱 앱이 사용량을 보여 줄 때와 같은 방식이라
+// 모델을 부르지 않고 토큰도 쓰지 않음. Claude Code는 받은 사용량을 1분 동안만 다시 쓰므로 값은 길어야 1분 전 것.
+// 받은 5시간·주간 사용률과 리셋 시각을 상태 표시줄 도우미와 같은 형식으로 rate_limits.json에 저장.
 //
 // - 로그인 정보는 Claude Code가 평소처럼 직접 처리하고, 이 앱은 읽거나 저장하지 않음
-// - 요청은 Haiku + 최소 시스템 프롬프트 + 도구·MCP·훅 없음 → 약 1,000 토큰
 // - 앱 자체는 네트워크에 접속하지 않음 (접속은 Claude Code가 함)
 
 enum ClaudeProbe {
-    /// 자동 갱신 간격
-    static let interval: TimeInterval = 15 * 60
-    static let timeout: TimeInterval = 90
+    /// 자동 갱신 간격 (토큰을 쓰지 않으니 자주 받아도 됨)
+    static let interval: TimeInterval = 5 * 60
+    static let timeout: TimeInterval = 45
 
     enum Failure: Error {
         case notFound
@@ -42,61 +42,44 @@ enum ClaudeProbe {
         // Finder에서 실행된 앱은 PATH가 짧음 → claude가 있는 폴더(npm 설치면 node도 같은 곳)와 흔한 경로 추가
         let extra = [cli.deletingLastPathComponent().path, "/opt/homebrew/bin", "/usr/local/bin"]
         env["PATH"] = (extra + [env["PATH"] ?? "/usr/bin:/bin:/usr/sbin:/sbin"]).joined(separator: ":")
-        // 자동 업데이트·오류 보고 같은 부가 통신은 끔 (사용량 값은 API 응답에 함께 오므로 영향 없음)
+        // 자동 업데이트·오류 보고 같은 부가 통신은 끔 (사용량 요청에는 영향 없음)
         env["CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"] = "1"
 
         let args = [
-            "-p", "OK",
-            "--model", "haiku",
+            "-p",
+            "--input-format", "stream-json",
             "--output-format", "stream-json", "--verbose",
-            "--system-prompt", "Reply with OK.",
-            "--tools", "",
             "--strict-mcp-config",
-            "--disable-slash-commands",
             "--no-session-persistence",
-            // 사용자의 훅(알림·소리 등)이 15분마다 실행되지 않게
+            // 사용자의 훅(알림·소리 등)이 갱신할 때마다 실행되지 않게
             "--settings", #"{"disableAllHooks":true}"#,
         ]
-        guard let out = run(cli, args, cwd: workDir, env: env, timeout: timeout) else {
+        let requests: [[String: Any]] = [
+            ["subtype": "initialize"],
+            ["subtype": "get_usage", "skip_behaviors": true],
+        ]
+        guard let reply = control(cli, args, requests: requests, wanted: "get_usage", cwd: workDir, env: env, timeout: timeout) else {
             return .failure(.failed("could not start claude"))
         }
-        if out.timedOut { return .failure(.failed("timed out")) }
-
-        var windows: [String: Any]?
-        var errorText: String?
-        for line in String(decoding: out.stdout, as: UTF8.self).split(separator: "\n") {
-            guard let obj = try? JSONSerialization.jsonObject(with: Data(line.utf8)) as? [String: Any] else { continue }
-            switch obj["type"] as? String {
-            case "rate_limit_event":
-                let info = obj["rate_limit_info"] as? [String: Any]
-                if let w = info?["unifiedWindows"] as? [String: Any] { windows = w }
-            case "result":
-                if obj["is_error"] as? Bool == true {
-                    errorText = (obj["result"] as? String) ?? (obj["subtype"] as? String)
-                }
-            default:
-                break
-            }
+        if reply.timedOut { return .failure(.failed("timed out")) }
+        guard let r = reply.response else { return .failure(.failed(reply.errorTail.isEmpty ? "no answer" : String(reply.errorTail.prefix(160)))) }
+        guard r["subtype"] as? String == "success", let body = r["response"] as? [String: Any] else {
+            return .failure(.failed(String(((r["error"] as? String) ?? "get_usage failed").prefix(160))))
         }
-
-        // utilization은 0~1 비율 → 상태 표시줄과 같은 0~100 퍼센트로 변환
-        var saved: [String: Any] = ["updated_at": Date().timeIntervalSince1970]
-        for key in ["five_hour", "seven_day"] {
-            guard let w = windows?[key] as? [String: Any],
-                  let u = (w["utilization"] as? NSNumber)?.doubleValue else { continue }
-            var entry: [String: Any] = ["used_percentage": (u * 10000).rounded() / 100]   // 소수 둘째 자리까지
-            if let r = (w["resetsAt"] as? NSNumber)?.doubleValue { entry["resets_at"] = r }
-            saved[key] = entry
-        }
-        guard saved.count > 1 else {
-            if let e = errorText, !e.isEmpty { return .failure(.failed(String(e.prefix(160)))) }
-            if out.status != 0 {
-                let err = String(decoding: out.stderr, as: UTF8.self)
-                    .split(separator: "\n").last.map(String.init) ?? "exit \(out.status)"
-                return .failure(.failed(String(err.prefix(160))))
-            }
+        guard body["rate_limits_available"] as? Bool == true, let limits = body["rate_limits"] as? [String: Any] else {
             return .failure(.noUsage)
         }
+
+        // utilization은 이미 0~100 퍼센트, resets_at은 ISO 시각 → 상태 표시줄과 같은 초 단위로
+        var saved: [String: Any] = ["updated_at": Date().timeIntervalSince1970]
+        for key in ["five_hour", "seven_day"] {
+            guard let w = limits[key] as? [String: Any],
+                  let u = (w["utilization"] as? NSNumber)?.doubleValue else { continue }
+            var entry: [String: Any] = ["used_percentage": u]
+            if let reset = seconds(w["resets_at"]) { entry["resets_at"] = reset }
+            saved[key] = entry
+        }
+        guard saved.count > 1 else { return .failure(.noUsage) }
 
         do {
             try fm.createDirectory(at: Paths.dataDir, withIntermediateDirectories: true)
@@ -106,6 +89,88 @@ enum ClaudeProbe {
             return .failure(.failed(error.localizedDescription))
         }
         return .success(saved)
+    }
+
+    /// "2026-11-06T19:40:00.799482+00:00" 같은 시각(또는 초·밀리초 숫자) → 1970년부터의 초
+    static func seconds(_ value: Any?) -> Double? {
+        if let n = value as? NSNumber { return n.doubleValue > 1e12 ? n.doubleValue / 1000 : n.doubleValue }
+        guard let text = value as? String else { return nil }
+        // ISO8601DateFormatter는 소수 초를 세 자리까지만 읽어서, 소수 부분은 떼고 읽음
+        let plain = text.replacingOccurrences(of: #"\.\d+"#, with: "", options: .regularExpression)
+        return ISO8601DateFormatter().date(from: plain)?.timeIntervalSince1970
+    }
+
+    // MARK: 제어 요청 보내기
+
+    struct Reply {
+        let response: [String: Any]?
+        let timedOut: Bool
+        let errorTail: String
+    }
+
+    /// stream-json 모드의 claude에 제어 요청을 한 줄씩 보내고, 원하는 요청(wanted)의 답이 오면 입력을 닫아 끝냄
+    static func control(_ exe: URL, _ args: [String], requests: [[String: Any]], wanted: String,
+                        cwd: URL, env: [String: String], timeout: TimeInterval) -> Reply? {
+        signal(SIGPIPE, SIG_IGN)     // claude가 먼저 끝나도 앱이 같이 꺼지지 않게
+        let p = Process()
+        p.executableURL = exe
+        p.arguments = args
+        p.currentDirectoryURL = cwd
+        p.environment = env
+        let inPipe = Pipe(), outPipe = Pipe(), errPipe = Pipe()
+        p.standardInput = inPipe
+        p.standardOutput = outPipe
+        p.standardError = errPipe
+
+        let lock = NSLock()
+        let done = DispatchSemaphore(value: 0)
+        var buffer = Data(), errData = Data()
+        var found: [String: Any]?
+        outPipe.fileHandleForReading.readabilityHandler = { h in
+            let chunk = h.availableData
+            lock.lock(); defer { lock.unlock() }
+            if chunk.isEmpty { h.readabilityHandler = nil; done.signal(); return }   // 답 없이 끝남
+            guard found == nil else { return }
+            buffer.append(chunk)
+            while let nl = buffer.firstIndex(of: 0x0A) {
+                let line = buffer.subdata(in: buffer.startIndex..<nl)
+                buffer.removeSubrange(buffer.startIndex...nl)
+                guard let obj = try? JSONSerialization.jsonObject(with: line) as? [String: Any],
+                      obj["type"] as? String == "control_response",
+                      let r = obj["response"] as? [String: Any],
+                      r["request_id"] as? String == wanted else { continue }
+                found = r
+                done.signal()
+                return
+            }
+        }
+        errPipe.fileHandleForReading.readabilityHandler = { h in
+            let chunk = h.availableData
+            if chunk.isEmpty { h.readabilityHandler = nil; return }
+            lock.lock(); errData.append(chunk); if errData.count > 8192 { errData = errData.suffix(4096) }; lock.unlock()
+        }
+        do { try p.run() } catch { return nil }
+
+        var input = Data()
+        for req in requests {
+            let msg: [String: Any] = ["type": "control_request", "request_id": req["subtype"] as? String ?? "", "request": req]
+            if let d = try? JSONSerialization.data(withJSONObject: msg) { input.append(d); input.append(0x0A) }
+        }
+        try? inPipe.fileHandleForWriting.write(contentsOf: input)
+        let waited = done.wait(timeout: .now() + timeout)
+
+        // 입력을 닫으면 claude가 스스로 끝남. 5초 안에 안 끝나면 끔
+        try? inPipe.fileHandleForWriting.close()
+        let deadline = Date().addingTimeInterval(5)
+        while p.isRunning && Date() < deadline { usleep(50_000) }
+        if p.isRunning { p.terminate() }
+        outPipe.fileHandleForReading.readabilityHandler = nil
+        errPipe.fileHandleForReading.readabilityHandler = nil
+
+        lock.lock(); defer { lock.unlock() }
+        var tail = String(decoding: errData, as: UTF8.self).split(separator: "\n").last.map(String.init) ?? ""
+        if tail.isEmpty, !p.isRunning, p.terminationStatus != 0 { tail = "exit \(p.terminationStatus)" }
+        return Reply(response: found, timedOut: waited == .timedOut && found == nil, errorTail: tail)
     }
 
     // MARK: claude 실행 파일 찾기

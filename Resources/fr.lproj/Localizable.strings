@@ -40,9 +40,9 @@
 "button.checkUpdates" = "Rechercher des mises à jour…";
 "button.checkUpdates.help" = "Ouvre la dernière version sur GitHub dans votre navigateur. Usage Pace ne se connecte jamais à Internet.";
 "settings.auto" = "Actualisation auto";
-"settings.auto.toggle" = "Actualiser toutes les 15 min sans le Terminal";
-"settings.auto.hint" = "Lance votre Claude Code installé avec une toute petite requête (Haiku, environ 1 000 jetons) et lit l'utilisation renvoyée. Cela consomme une très petite part de votre limite. Fonctionne même si vous n'utilisez que l'app de bureau.";
-"footer.source.auto" = "Mis à jour toutes les 15 min et à chaque réponse dans le Terminal";
+"settings.auto.toggle" = "Actualiser toutes les 5 min sans le Terminal";
+"settings.auto.hint" = "Demande l'utilisation à votre Claude Code installé, comme le fait l'app de bureau. Aucun message n'est envoyé : aucun jeton n'est utilisé et votre limite reste intacte. Fonctionne même si vous n'utilisez que l'app de bureau.";
+"footer.source.auto" = "Mis à jour toutes les 5 min et à chaque réponse dans le Terminal";
 "empty.auto" = "Récupération de votre utilisation depuis Claude Code…";
 "button.enableAuto" = "Activer l'actualisation auto";
 "auto.error.notFound" = "Claude Code introuvable. Vérifiez que la commande claude fonctionne dans le Terminal.";

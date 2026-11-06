@@ -40,9 +40,9 @@
 "button.checkUpdates" = "アップデートを確認…";
 "button.checkUpdates.help" = "ブラウザで GitHub の最新リリースを開きます。Usage Pace 自体はインターネットに接続しません。";
 "settings.auto" = "自動更新";
-"settings.auto.toggle" = "ターミナルなしで15分ごとに更新";
-"settings.auto.hint" = "インストール済みの Claude Code でごく小さなリクエスト（Haiku、約1,000トークン）を送り、一緒に返ってくる使用量を読み取ります。上限をごくわずかに消費します。デスクトップアプリだけを使っていても動作します。";
-"footer.source.auto" = "15分ごと、およびターミナルでの応答時に更新";
+"settings.auto.toggle" = "ターミナルなしで5分ごとに更新";
+"settings.auto.hint" = "インストール済みの Claude Code に、デスクトップアプリと同じ方法で使用量だけを問い合わせます。メッセージを送らないので、トークンを使わず上限も減りません。デスクトップアプリだけを使っていても動作します。";
+"footer.source.auto" = "5分ごと、およびターミナルでの応答時に更新";
 "empty.auto" = "Claude Code から使用量を取得中…";
 "button.enableAuto" = "自動更新をオン";
 "auto.error.notFound" = "Claude Code が見つかりません。ターミナルで claude コマンドが動くか確認してください。";

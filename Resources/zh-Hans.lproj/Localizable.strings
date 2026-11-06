@@ -40,9 +40,9 @@
 "button.checkUpdates" = "检查更新…";
 "button.checkUpdates.help" = "在浏览器中打开 GitHub 上的最新版本。Usage Pace 本身从不连接互联网。";
 "settings.auto" = "自动刷新";
-"settings.auto.toggle" = "无需终端，每 15 分钟刷新";
-"settings.auto.hint" = "使用已安装的 Claude Code 发送一个极小的请求（Haiku，约 1,000 个 token），并读取随之返回的用量。会占用极少量额度。即使只使用桌面应用也能工作。";
-"footer.source.auto" = "每 15 分钟及终端回复时更新";
+"settings.auto.toggle" = "无需终端，每 5 分钟刷新";
+"settings.auto.hint" = "以与桌面应用相同的方式，向已安装的 Claude Code 查询用量。不发送任何消息，因此不消耗 token，也不占用额度。即使只使用桌面应用也能工作。";
+"footer.source.auto" = "每 5 分钟及终端回复时更新";
 "empty.auto" = "正在从 Claude Code 获取用量…";
 "button.enableAuto" = "开启自动刷新";
 "auto.error.notFound" = "找不到 Claude Code。请确认终端中可以运行 claude 命令。";

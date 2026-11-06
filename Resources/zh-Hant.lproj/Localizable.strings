@@ -40,9 +40,9 @@
 "button.checkUpdates" = "檢查更新…";
 "button.checkUpdates.help" = "在瀏覽器中開啟 GitHub 上的最新版本。Usage Pace 本身從不連線網際網路。";
 "settings.auto" = "自動重新整理";
-"settings.auto.toggle" = "不需終端機，每 15 分鐘重新整理";
-"settings.auto.hint" = "使用已安裝的 Claude Code 傳送一個極小的請求（Haiku，約 1,000 個 token），並讀取隨之回傳的用量。會佔用極少量額度。即使只使用桌面應用程式也能運作。";
-"footer.source.auto" = "每 15 分鐘及終端機回覆時更新";
+"settings.auto.toggle" = "不需終端機，每 5 分鐘重新整理";
+"settings.auto.hint" = "以與桌面應用程式相同的方式，向已安裝的 Claude Code 查詢用量。不傳送任何訊息，因此不消耗 token，也不佔用額度。即使只使用桌面應用程式也能運作。";
+"footer.source.auto" = "每 5 分鐘及終端機回覆時更新";
 "empty.auto" = "正在從 Claude Code 取得用量…";
 "button.enableAuto" = "開啟自動重新整理";
 "auto.error.notFound" = "找不到 Claude Code。請確認終端機中可以執行 claude 指令。";

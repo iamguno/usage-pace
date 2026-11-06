@@ -40,9 +40,9 @@
 "button.checkUpdates" = "Check for Updates…";
 "button.checkUpdates.help" = "Opens the latest release on GitHub in your browser. Usage Pace itself never connects to the internet.";
 "settings.auto" = "Auto refresh";
-"settings.auto.toggle" = "Refresh every 15 min without the terminal";
-"settings.auto.hint" = "Runs your installed Claude Code with a tiny request (Haiku, about 1,000 tokens) and reads the usage that comes back. It uses a very small amount of your limit. Works even if you only use the desktop app.";
-"footer.source.auto" = "Updates every 15 min and on terminal responses";
+"settings.auto.toggle" = "Refresh every 5 min without the terminal";
+"settings.auto.hint" = "Asks your installed Claude Code for your usage, the same way the desktop app does. It sends no message, so it uses no tokens and doesn't touch your limit. Works even if you only use the desktop app.";
+"footer.source.auto" = "Updates every 5 min and on terminal responses";
 "empty.auto" = "Getting your usage from Claude Code…";
 "button.enableAuto" = "Turn on auto refresh";
 "auto.error.notFound" = "Couldn't find Claude Code. Make sure the claude command works in Terminal.";

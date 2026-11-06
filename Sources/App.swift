@@ -45,7 +45,7 @@ final class UsageStore: ObservableObject {
     @Published var menuStyle: MenuStyle {
         didSet { defaults.set(menuStyle.rawValue, forKey: "menuStyle") }
     }
-    /// 터미널 없이 자동 갱신 (Claude Code를 15분마다 아주 작게 실행). 사용량을 조금 쓰므로 기본은 꺼짐.
+    /// 터미널 없이 자동 갱신 (Claude Code에 5분마다 사용량만 물어봄, 토큰은 안 씀). 설치된 claude를 대신 실행하는 일이라 기본은 꺼짐.
     @Published var autoRefresh: Bool {
         didSet {
             guard !demo else { return }
@@ -83,7 +83,7 @@ final class UsageStore: ObservableObject {
         ClaudeCodeConnector.refreshBridgeIfConnected()
         reload()
         probeIfDue()
-        // 파일 읽기는 가벼우므로 10초마다 확인 (시간 경과 %도 함께 갱신). 자동 갱신은 15분이 지났을 때만 실행.
+        // 파일 읽기는 가벼우므로 10초마다 확인 (시간 경과 %도 함께 갱신). 자동 갱신은 5분이 지났을 때만 실행.
         timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 self?.reload()
@@ -98,7 +98,7 @@ final class UsageStore: ObservableObject {
         probeIfDue(force: true)
     }
 
-    /// 자동 갱신: 마지막 데이터(터미널 포함)와 마지막 시도가 모두 15분 이상 지났을 때만 실행
+    /// 자동 갱신: 마지막 데이터(터미널 포함)와 마지막 시도가 모두 갱신 간격(5분) 이상 지났을 때만 실행
     func probeIfDue(force: Bool = false) {
         guard autoRefresh, !demo, !probing else { return }
         if !force {

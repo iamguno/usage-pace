@@ -40,9 +40,9 @@
 "button.checkUpdates" = "업데이트 확인…";
 "button.checkUpdates.help" = "브라우저에서 GitHub 최신 릴리스 페이지를 열어요. Usage Pace는 인터넷에 직접 접속하지 않아요.";
 "settings.auto" = "자동 갱신";
-"settings.auto.toggle" = "터미널 없이 15분마다 갱신";
-"settings.auto.hint" = "설치된 Claude Code로 아주 작은 요청(Haiku, 약 1,000 토큰)을 보내고, 함께 오는 사용량을 읽어요. 한도를 아주 조금 써요. 데스크톱 앱만 써도 동작해요.";
-"footer.source.auto" = "15분마다, 그리고 터미널 응답 때 갱신";
+"settings.auto.toggle" = "터미널 없이 5분마다 갱신";
+"settings.auto.hint" = "설치된 Claude Code에 데스크톱 앱과 같은 방식으로 사용량만 물어봐요. 메시지를 보내지 않아서 토큰을 쓰지 않고 한도도 줄지 않아요. 데스크톱 앱만 써도 동작해요.";
+"footer.source.auto" = "5분마다, 그리고 터미널 응답 때 갱신";
 "empty.auto" = "Claude Code에서 사용량을 받아오는 중…";
 "button.enableAuto" = "자동 갱신 켜기";
 "auto.error.notFound" = "Claude Code를 찾지 못했어요. 터미널에서 claude 명령이 실행되는지 확인하세요.";

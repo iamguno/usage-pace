@@ -33,7 +33,7 @@ Usage Pace puts both numbers side by side.
 - **Projection**: "about 76% used by reset" or "you'll hit the limit around Sat 6:37 PM"
 - **Menu bar text** such as `47% / 30%`. You can choose weekly or session, and how it's shown.
 - **9 languages**: English, 한국어, 日本語, 简体中文, 繁體中文, Español, Français, Deutsch, Português (Brasil)
-- **Works with the desktop app too**: optional auto refresh every 15 minutes, no terminal needed
+- **Works with the desktop app too**: optional auto refresh every 5 minutes, no terminal and no tokens needed
 - **No login, no tokens.** The app itself never connects to the internet.
 
 ## How it works
@@ -51,12 +51,13 @@ Claude Code passes official rate limit data (`rate_limits.five_hour` / `seven_da
 ### Auto refresh (optional, works with the desktop app)
 
 If you only use Claude Code in the desktop app, the status line never runs. Turn on
-**Settings → Auto refresh** instead. Every 15 minutes, Usage Pace runs your installed `claude` CLI in
-headless mode (`claude -p`) with a tiny request: Haiku, a one-line system prompt, and no tools, MCP
-servers or hooks. That's about 1,000 tokens, a very small amount of your limit. Claude Code returns
-the same official rate limit numbers with the response, and Usage Pace saves only those.
+**Settings → Auto refresh** instead. Every 5 minutes, Usage Pace briefly starts your installed `claude`
+CLI in headless mode and sends it a single usage request (`get_usage`), the same one the desktop app
+uses to show your usage. No message is sent and no model is called, so it uses **no tokens** and doesn't
+touch your limit. Claude Code answers with the official 5-hour and weekly numbers (at most a minute
+old), and Usage Pace saves only those.
 
-- It skips a run if the terminal status line already updated within the last 15 minutes.
+- It skips a run if the terminal status line already updated within the last 5 minutes.
 - The refresh button in the popover runs it right away.
 - Sign-in stays with Claude Code. Usage Pace never reads or stores credentials.
 - The `claude` CLI must be installed and signed in. If you've only used the desktop app,
@@ -113,8 +114,8 @@ open ~/Applications/UsagePace.app
 
 Usage Pace makes no network requests and collects no analytics.
 It reads only the rate limit numbers that Claude Code passes to it.
-If you turn on auto refresh, Usage Pace runs your installed Claude Code CLI every 15 minutes,
-and Claude Code sends that tiny request to Anthropic as it normally would.
+If you turn on auto refresh, Usage Pace runs your installed Claude Code CLI every 5 minutes to ask for
+your usage, and Claude Code fetches it from Anthropic as it normally would. No message is sent.
 
 ## Disclaimer
 
