@@ -42,8 +42,11 @@ enum ClaudeProbe {
         // Finder에서 실행된 앱은 PATH가 짧음 → claude가 있는 폴더(npm 설치면 node도 같은 곳)와 흔한 경로 추가
         let extra = [cli.deletingLastPathComponent().path, "/opt/homebrew/bin", "/usr/local/bin"]
         env["PATH"] = (extra + [env["PATH"] ?? "/usr/bin:/bin:/usr/sbin:/sbin"]).joined(separator: ":")
-        // 자동 업데이트·오류 보고 같은 부가 통신은 끔 (사용량 요청에는 영향 없음)
-        env["CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"] = "1"
+        // 자동 업데이트·사용 통계·오류 보고는 끔. CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC로 한꺼번에 끄면
+        // 사용량 조회도 '부가 통신'으로 막혀서 Claude Code가 저장해 둔 값(1시간까지)만 주고, 그보다 오래되면 아무것도 안 줌
+        env["DISABLE_AUTOUPDATER"] = "1"
+        env["DISABLE_TELEMETRY"] = "1"
+        env["DISABLE_ERROR_REPORTING"] = "1"
 
         let args = [
             "-p",
