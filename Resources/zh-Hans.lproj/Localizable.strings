@@ -47,6 +47,7 @@
 "button.enableAuto" = "开启自动刷新";
 "auto.error.notFound" = "找不到 Claude Code。请确认终端中可以运行 claude 命令。";
 "auto.error.noUsage" = "Claude Code 没有返回用量。需要使用 Pro、Max 或 Ultra 套餐登录。";
+"auto.error.loggedOut" = "终端里的 Claude Code 已退出登录。请在终端运行 claude auth login 重新登录。";
 "auto.error.failed" = "自动刷新失败：%@";
 "error.settingsUnreadable" = "无法读取 ~/.claude/settings.json，因此未做任何更改。请检查该文件是否为有效的 JSON。";
 "error.settingsWrite" = "无法更新 Claude Code 设置（%@）。";

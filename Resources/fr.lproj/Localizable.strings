@@ -47,6 +47,7 @@
 "button.enableAuto" = "Activer l'actualisation auto";
 "auto.error.notFound" = "Claude Code introuvable. Vérifiez que la commande claude fonctionne dans le Terminal.";
 "auto.error.noUsage" = "Claude Code n'a pas renvoyé d'utilisation. Il doit être connecté avec un forfait Pro, Max ou Ultra.";
+"auto.error.loggedOut" = "Claude Code dans le Terminal est déconnecté. Lancez claude auth login dans le Terminal pour vous reconnecter.";
 "auto.error.failed" = "Échec de l'actualisation auto : %@";
 "error.settingsUnreadable" = "Impossible de lire ~/.claude/settings.json : rien n'a été modifié. Vérifiez que le fichier est un JSON valide.";
 "error.settingsWrite" = "Impossible de mettre à jour les réglages de Claude Code (%@).";

@@ -47,6 +47,7 @@
 "button.enableAuto" = "自動更新をオン";
 "auto.error.notFound" = "Claude Code が見つかりません。ターミナルで claude コマンドが動くか確認してください。";
 "auto.error.noUsage" = "Claude Code から使用量が返りませんでした。Pro・Max・Ultra プランでログインしている必要があります。";
+"auto.error.loggedOut" = "ターミナルの Claude Code がログアウトしています。ターミナルで claude auth login を実行してログインし直してください。";
 "auto.error.failed" = "自動更新に失敗しました: %@";
 "error.settingsUnreadable" = "~/.claude/settings.json を読み取れなかったため、何も変更していません。ファイルが正しい JSON か確認してください。";
 "error.settingsWrite" = "Claude Code の設定を更新できませんでした（%@）。";

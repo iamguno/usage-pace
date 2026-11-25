@@ -47,6 +47,7 @@
 "button.enableAuto" = "開啟自動重新整理";
 "auto.error.notFound" = "找不到 Claude Code。請確認終端機中可以執行 claude 指令。";
 "auto.error.noUsage" = "Claude Code 沒有回傳用量。需要使用 Pro、Max 或 Ultra 方案登入。";
+"auto.error.loggedOut" = "終端機的 Claude Code 已登出。請在終端機執行 claude auth login 重新登入。";
 "auto.error.failed" = "自動重新整理失敗：%@";
 "error.settingsUnreadable" = "無法讀取 ~/.claude/settings.json，因此未做任何變更。請確認該檔案是有效的 JSON。";
 "error.settingsWrite" = "無法更新 Claude Code 設定（%@）。";

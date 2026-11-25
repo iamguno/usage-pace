@@ -47,6 +47,7 @@
 "button.enableAuto" = "Activar actualización automática";
 "auto.error.notFound" = "No se encontró Claude Code. Comprueba que el comando claude funcione en la terminal.";
 "auto.error.noUsage" = "Claude Code no devolvió el uso. Debe haber iniciado sesión con un plan Pro, Max o Ultra.";
+"auto.error.loggedOut" = "Claude Code en la terminal cerró sesión. Ejecuta claude auth login en la terminal para volver a iniciar sesión.";
 "auto.error.failed" = "Falló la actualización automática: %@";
 "error.settingsUnreadable" = "No se pudo leer ~/.claude/settings.json, así que no se cambió nada. Comprueba que el archivo sea JSON válido.";
 "error.settingsWrite" = "No se pudo actualizar la configuración de Claude Code (%@).";

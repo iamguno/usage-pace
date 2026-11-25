@@ -47,6 +47,7 @@
 "button.enableAuto" = "Automatisch aktualisieren";
 "auto.error.notFound" = "Claude Code wurde nicht gefunden. Prüfe, ob der Befehl claude im Terminal funktioniert.";
 "auto.error.noUsage" = "Claude Code hat keine Nutzung geliefert. Es muss mit einem Pro-, Max- oder Ultra-Plan angemeldet sein.";
+"auto.error.loggedOut" = "Claude Code im Terminal ist abgemeldet. Führe claude auth login im Terminal aus, um dich erneut anzumelden.";
 "auto.error.failed" = "Automatische Aktualisierung fehlgeschlagen: %@";
 "error.settingsUnreadable" = "~/.claude/settings.json konnte nicht gelesen werden, daher wurde nichts geändert. Prüfe, ob die Datei gültiges JSON ist.";
 "error.settingsWrite" = "Claude-Code-Einstellungen konnten nicht aktualisiert werden (%@).";

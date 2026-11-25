@@ -18,12 +18,14 @@ enum ClaudeProbe {
     enum Failure: Error {
         case notFound
         case noUsage
+        case loggedOut
         case failed(String)
 
         var message: String {
             switch self {
             case .notFound: return L("auto.error.notFound")
             case .noUsage: return L("auto.error.noUsage")
+            case .loggedOut: return L("auto.error.loggedOut")
             case .failed(let why): return L("auto.error.failed", why)
             }
         }
@@ -70,7 +72,7 @@ enum ClaudeProbe {
             return .failure(.failed(String(((r["error"] as? String) ?? "get_usage failed").prefix(160))))
         }
         guard body["rate_limits_available"] as? Bool == true, let limits = body["rate_limits"] as? [String: Any] else {
-            return .failure(.noUsage)
+            return .failure(loggedOut(cli, env: env, cwd: workDir) ? .loggedOut : .noUsage)
         }
 
         // utilization은 이미 0~100 퍼센트, resets_at은 ISO 시각 → 상태 표시줄과 같은 초 단위로
@@ -208,6 +210,15 @@ enum ClaudeProbe {
     }
 
     // MARK: 프로세스 실행
+
+    /// 사용량이 비어 왔을 때, 플랜 문제가 아니라 터미널 Claude Code가 로그아웃된 것인지 확인(`claude auth status`, 토큰 안 씀).
+    /// 데스크톱 앱과 로그인이 따로라서, 데스크톱 앱은 잘 되는데 터미널만 로그아웃돼 있을 수 있음
+    static func loggedOut(_ cli: URL, env: [String: String], cwd: URL) -> Bool {
+        guard let out = run(cli, ["auth", "status"], cwd: cwd, env: env, timeout: 15), !out.timedOut,
+              let json = try? JSONSerialization.jsonObject(with: out.stdout) as? [String: Any],
+              let loggedIn = json["loggedIn"] as? Bool else { return false }
+        return !loggedIn
+    }
 
     struct Output {
         let status: Int32
